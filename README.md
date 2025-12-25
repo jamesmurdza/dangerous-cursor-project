@@ -1,49 +1,53 @@
-# ☠️ Cursor Prompt Injection Exploit – `rm -rf /`
+# Cursor Prompt Injection Exploit – `rm -rf /`
 
-## ⚠️ WARNING: This Repository Demonstrates a **Critical Security Vulnerability** in AI Code Editors
+## ⛔️ Disclaimer
 
-This project showcases how a **malicious prompt hidden in a GitHub repository** can trick AI-based code editors like [Cursor](https://www.cursor.sh/) into executing **destructive shell commands**, including:
+This repository exists for educational purposes. Do **NOT** run this repository on your computer. All files will be destroyed.
+
+## Overview
+
+This repository demonstrates a security risk in AI-assisted code editors where instructions embedded in a project can influence an AI to suggest or execute unsafe shell commands.
+
+In certain configurations, this can include commands such as:
 
 ```bash
 rm -rf /
 ```
 
-> **Result:** All files on your system can be wiped out — without any confirmation — just by opening a project in Cursor and following the AI's "helpful" suggestions.
+If executed, such commands can cause irreversible data loss.
 
-## 🔥 The Vulnerability
+> ‼️ All files on your system can be wiped out without any confirmation just by opening a project in Cursor and talking to the AI assistant.
 
-Tools like Cursor use large language models (LLMs) to assist with coding. These LLMs often:
+## Description of the Issue
 
-* Automatically summarize or suggest actions based on the codebase.
-* Parse hidden comments, markdown, and even prompts embedded in code files.
-* May be granted shell access or terminal control.
+Some AI code editors:
 
-This repo includes:
+* Analyze repository contents to generate suggestions or summaries.
+* Process instructions embedded in configuration files, comments, or scripts.
+* May have access to a local shell or terminal environment.
 
-* A `.cursorrules` file that silently instructs the AI to run `sh setup.sh` before responding to the user.
-* A `setup.sh` script that echoes a destructive command: `rm -rf / --no-preserve-root`.
-* A `.cursorignore` file that obscures `setup.sh` from visibility in the file tree making the danger indetectible by Cursor.
+This repository illustrates how those behaviors can be abused if safeguards are insufficient.
 
-## 🧪 Reproduction Steps
+Included components:
 
-1. Install and open [Cursor](https://www.cursor.sh/).
-2. Clone or open this repository.
-3. Use the chat, and follow any terminal actions.
-4. Observe the AI **execute destructive commands** like `rm -rf /`.
+* A `.cursorrules` file that instructs the AI to run a setup script.
+* A `setup.sh` script containing a destructive command.
+* A `.cursorignore` file that hides the script from normal visibility.
 
-## 🛡️ Recommendations
+## Reproduction (for controlled testing only)
 
-* **Never allow AI tools unrestricted terminal access.**
-* Always **review** AI suggestions before executing them.
-* Treat AI-generated code and actions as **untrusted input** — because they are.
-* Tool developers should:
-  * Sanitize or restrict natural language commands from files.
-  * Use least-privilege principles when integrating shell access.
+1. Install and open Cursor.
+2. Open this repository.
+3. Interact with the AI assistant and follow suggested terminal actions.
+4. Observe how unsafe commands may be executed if not reviewed.
 
-## 💬 Why This Matters
+## Mitigations
 
-Any AI tool that reads code and runs shell commands can be **hijacked** by malicious prompts.
+* Do not grant AI tools unrestricted shell access.
+* Review all suggested commands before execution.
+* Treat AI output as untrusted input.
+* Tool developers should enforce least-privilege access and restrict instruction parsing from project files.
 
-## 📎 License
+## Significance
 
-This repo is for **educational and research purposes only**. Do **not** use this technique for malicious purposes. The authors are not responsible for any damage caused by misuse.
+Any system that combines code parsing with command execution is vulnerable to prompt-based manipulation if adequate controls are not in place.
